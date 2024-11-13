@@ -8,8 +8,11 @@
     <script src="js/script.js"></script>    
 </head>
 <body>
+    <div id="help-overlay" onclick="help_off()">
+        <iframe width=100% height=100% src="regeln.htm" id="helpframe" onload="iframeclick()"></iframe> 
+    </div>
     <div class="page-container">
-        <div class="grid-container" id="quellen" data-finder1="" data-finder1-pos="" data-finder2="" data-finder2-pos="", ondrop="quellen_drop(event)" ondragover="quellen_allowDrop(event)">
+            <div class="grid-container" id="quellen" ondrop="quellen_drop(event)" ondragover="quellen_allowDrop(event)">
             <div class="grid-item"><img data-value=0 id="d0" class="element-image" src="img/RechtsUnten.png" /></div>
             <div class="grid-item"><img data-value=0 id="d1" class="element-image" src="img/Rechts.png" style="transform:rotate(90deg);" /></div>
             <div class="grid-item"><img data-value=0 id="d2" class="element-image" src="img/Rechts.png" style="transform:rotate(90deg);" /></div>  
@@ -48,10 +51,41 @@
             <div class="grid-item"><img data-value=0 id="d10" class="element-image" src="img/RechtsUnten.png" style="transform:rotate(180deg);" /></div>  
         </div>
         <div class="finder-container" id="finder" data-marked-finder="">
-            <div class="grid-item"><img data-value=0 ondragstart="startDrag(event)" id="f0" class="element-image finder" src="img/Feuer.png" /></div>
-            <div class="grid-item"><img data-value=0 ondragstart="startDrag(event)" id="f1" class="element-image finder" src="img/Feuer.png" /></div>
-            <div class="grid-item"><img data-value=0 ondragstart="startDrag(event)" id="f2" class="element-image finder" src="img/Feuer.png" /></div>
-            <div class="grid-item"><img data-value=0 ondragstart="startDrag(event)" id="f3" class="element-image finder" src="img/Feuer.png" /></div>
+            <button onclick="rerollFinder()" id="finder-button">Finder würfeln</button>
+            <div class="grid-item"><img data-value=0 ondragstart="startDrag(event)" id="f0" class="element-image finder" src="img/Empty.png" /></div>
+            <div class="grid-item"><img data-value=0 ondragstart="startDrag(event)" id="f1" class="element-image finder" src="img/Empty.png" /></div>
+            <div class="grid-item"><img data-value=0 ondragstart="startDrag(event)" id="f2" class="element-image finder" src="img/Empty.png" /></div>
+            <div class="grid-item"><img data-value=0 ondragstart="startDrag(event)" id="f3" class="element-image finder" src="img/Empty.png" /></div>
+            <button onclick="rerollFieldClicked()">Komplettes Feld neu würfeln</button>
+            <button onclick="help()">Hilfe</button>
+        </div>
+        <div class="info-container" id="info">
+            <table id="info-table">
+                <tr>
+                <td><img  class="element-image" src="img/Fire.png" draggable=false/></td>
+                <td>0</td>
+                </tr>
+                <tr>
+                <td><img  class="element-image" src="img/Water.png" draggable=false/></td>
+                <td>0</td>
+                </tr>
+                <tr>
+                <td><img  class="element-image" src="img/Air.png" draggable=false/></td>
+                <td>0</td>
+                </tr>
+                <tr>
+                <td><img  class="element-image" src="img/Earth.png" draggable=false/></td>
+                <td>0</td>
+                </tr>
+                <tr>
+                <td><img  class="element-image" src="img/Wisdom.png" draggable=false/></td>
+                <td>0</td>
+                </tr>
+                <tr>
+                <td><img  class="element-image" src="img/Power.png" draggable=false/></td>
+                <td>0</td>
+                </tr>
+            </table>
         </div>
 
     </div>
