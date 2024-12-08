@@ -40,6 +40,7 @@
   .finder-container {
     display: grid;
     grid-template-columns: 100%;
+    grid-template-rows: 16% 16% 16% 16% 16% 8% 8%;
     background-color: #ffffff;
     width: 100%;
   }
@@ -94,4 +95,39 @@ td {
 table {
   margin-left: 40px;
   user-select: none;
+}
+
+.finder-img-container {
+  position: relative;
+}
+
+.finder-img-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.finder {
+  z-index: 1;
+  user-select: none;
+  touch-action: none;
+}
+
+.dropzone {
+  border: dashed 4px transparent;
+  border-radius: 4px;
+}
+
+.drop-active {
+  border-color: #aaa;
+}
+
+.drop-target {
+  border-color: #a00;
+  border-style: solid;
+}
+
+.drop-target-valid {
+  border-color: #0a0;
+  border-style: solid;
 }

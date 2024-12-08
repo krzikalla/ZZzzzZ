@@ -3,10 +3,9 @@ function diceroll()
   return Math.floor(Math.random() * 6);
 }
 
-function rerollId(id)
+function rerollId(element)
 {
   const element_names = ["Fire", "Water", "Air", "Earth", "Wisdom", "Power"];
-  let element = document.getElementById(id);
   element.dataset["value"] = diceroll();
   element.src = "img/" + element_names[element.dataset["value"]] + ".png";
 }
@@ -21,11 +20,11 @@ function updateInfoTable()
 {
   let infotable = document.getElementById("info-table");
   let element_nums = [0,0,0,0,0,0];
-  if (finder1 != "" && finder2 != "")
+  if (fieldFinderIndex.hasValidRow())
   {
-    let finder1_quell_id = getElementIndexForId(finder1);
-    let finder2_quell_id = getElementIndexForId(finder2);
-    traverseCurrentRow((i) => 
+    let finder1_quell_id = fieldFinderIndex.get1stFinder().dataset["value"];
+    let finder2_quell_id = fieldFinderIndex.get2ndFinder().dataset["value"]; 
+    fieldFinderIndex.traverseCurrentRow((i) => 
       { 
         let quell_id = getElementIndexForId("q" + i);
         if (quell_id == finder1_quell_id || quell_id == finder2_quell_id)
@@ -55,26 +54,300 @@ function updateInfoTable()
 function rerollField()
 {
   for (let i = 0; i < 16; i++) 
-    {
-      rerollId("q" + i);
-    }
+  {
+    rerollId(document.getElementById("q" + i));
+  }
   updateInfoTable()
+}
+
+function removeAllFinders()
+{
+  fieldFinderIndex.clear();
+  for (let i = 0; i < 4; i++) 
+  {
+    let element = document.getElementById("f" + i);
+    if (element)
+    {
+      interact(element).unset();
+      element.remove();
+    }
+  }
 }
 
 function rerollFieldClicked()
 {
-  if (confirm("Willst Du das gesamte Feld wirklich neu würfeln?"))
-  {
-    rerollField();
-  }
+  removeAllFinders();
+  rerollField();
 }
 
+function setRelativeFinderPosition(finder, x, y)
+{
+  finder.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+        
+  // update the posiion attributes
+  finder.setAttribute('data-x', x)
+  finder.setAttribute('data-y', y)
+}
+
+
+class FieldFinder {
+  constructor() {
+    this.field_finder = new Map;
+    this.finder_field = new Map;
+  }
+  
+  clear()
+  {
+    this.field_finder.clear();
+    this.finder_field.clear();
+  }
+
+  hasFinder(finder) 
+  {
+    return this.finder_field.has(finder);
+  }
+
+  hasField(field) 
+  {
+    return this.field_finder.has(field);
+  }
+
+  removeFinder(finder)
+  {
+    if (this.finder_field.has(finder))
+    {
+      let field = this.finder_field.get(finder);
+      this.finder_field.delete(finder);
+      this.field_finder.delete(field);
+    }
+  }
+
+  getFinderFromField(field)
+  {
+    return this.field_finder.get(field);
+  }
+
+  setFieldFinder(field, finder)
+  {
+    this.field_finder.set(field, finder); 
+    this.finder_field.set(finder, field);
+  }
+
+  getOnlyFieldId()
+  {
+    if (this.field_finder.size == 1)
+    {
+      return this.field_finder.keys().next().value.id;
+    }
+    else
+    {
+      return "";
+    }
+  }
+
+  hasValidRow()
+  {
+    if (this.field_finder.size == 2)
+    {
+      let fields = this.field_finder.keys();
+      let start = Number(fields.next().value.id.substring(1));
+      let end = Number(fields.next().value.id.substring(1));
+      return Math.abs(start - end) == 10;
+    }
+    return false;
+  }
+
+  get1stFinder()
+  {
+    return this.finder_field.keys().next().value;
+  }  
+
+  get2ndFinder()
+  {
+    let i = this.finder_field.keys();
+    i.next();
+    return i.next().value;
+  }  
+
+  traverseCurrentRow(traverse_fn)
+  {
+    // d0  d1  d2  d3  d4 d5 
+    // d6  q0  q1  q2  q3 d16
+    // d7  q4  q5  q6  q5 d17
+    // d8  q8  q9 q10 q11 d18
+    // d9 q12 q13 q14 q15 d19
+    // only d0-d9 are relevant 
+    if (this.field_finder.size != 2)
+    {
+      throw "traverseCurrentRow with size != 2 called";
+    }
+  
+    let fields = this.field_finder.keys();
+    let start = Number(fields.next().value.id.substring(1));
+    let end = Number(fields.next().value.id.substring(1));
+    if (Math.abs(start - end) != 10)
+    {
+      throw "traverseCurrentRow with non-mathcing fields called";
+    }
+
+    if (start > end)
+    {
+      start = end;
+    }
+    for (let i = 0; i < 4; ++i)
+    {
+      if (start == 0)
+      {
+        // top-left main diagonal
+        traverse_fn(i * 5); 
+      }
+      else if (start == 5)
+      {
+        // top-right main diagonal
+        traverse_fn((i + 1) * 3); 
+      }
+      else if (start <= 4)
+      {
+        // top-to-bottom
+        traverse_fn(start + (i * 4) - 1); 
+      }
+      else 
+      {
+        // left-to-right
+        traverse_fn(((start - 6) * 4) + i); 
+      }
+    }
+  }
+  
+
+};
+
+let fieldFinderIndex = new FieldFinder;
+
+
+function dropCompletesRow(field)
+{
+  let field1Id = fieldFinderIndex.getOnlyFieldId()
+  if (field1Id != "")
+  {
+    let field2Id = field.id;
+    if (Math.abs(Number(field1Id.substring(1)) - Number(field2Id.substring(1))) == 10)
+    {
+      return true;
+    }
+  }
+  return false;  
+}
+
+
+interact('.dropzone').dropzone({
+  // Require a 60% element overlap for a drop to be possible
+  overlap: 0.60,
+
+  // listen for drop related events:
+  ondropactivate: function (event) {
+    // add active dropzone feedback
+    event.target.classList.add('drop-active')
+  },
+
+  ondragenter: function (event) {
+    var dropzoneElement = event.target
+
+    // feedback the possibility of a drop
+    if (dropCompletesRow(dropzoneElement))
+    {
+      dropzoneElement.classList.add('drop-target-valid')
+    }
+    else
+    {
+      dropzoneElement.classList.add('drop-target')
+    }
+  },
+
+  ondragleave: function (event) {
+    // remove the drop feedback style
+    event.target.classList.remove('drop-target')
+    event.target.classList.remove('drop-target-valid')
+  },
+
+  ondrop: function (event) {
+    quellen_drop(event.target, event.relatedTarget);
+  },
+
+  ondropdeactivate: function (event) {
+    // remove active dropzone feedback
+    event.target.classList.remove('drop-active')
+    event.target.classList.remove('drop-target')
+    event.target.classList.remove('drop-target-valid')
+    if (!fieldFinderIndex.hasFinder(event.relatedTarget))
+    {
+      setRelativeFinderPosition(event.relatedTarget, 0, 0);
+    }
+    updateInfoTable();
+    updateFinderButtonState();
+  }
+})  
+
+function smartClick(event)
+{
+  let finder = event.target;
+  if (fieldFinderIndex.hasFinder(finder))
+  {
+    fieldFinderIndex.removeFinder(finder);
+    setRelativeFinderPosition(finder, 0, 0);
+    updateInfoTable();
+    updateFinderButtonState();
+  }
+  else 
+  { 
+    let field1Id = fieldFinderIndex.getOnlyFieldId();
+    if (field1Id != "")
+    {
+      let field1Index = Number(field1Id.substring(1));
+      let field2Index = field1Index >= 10 ? field1Index - 10 : field1Index + 10;
+      let target = document.getElementById('d' + field2Index);
+      fieldFinderIndex.setFieldFinder(target, finder);
+      moveFinderToBorder(target, finder);
+      updateInfoTable();
+      updateFinderButtonState();
+    }
+  }
+}
 
 function rerollFinder()
 {
   for (let i = 0; i < 4; i++) 
   {
-    rerollId("f" + i);
+    var img = document.createElement("img");
+    img.classList.add("finder");
+    img.classList.add("element-image");
+    img.id = "f" + i;
+    rerollId(img);
+    let finder_src = document.getElementById("pf" + i);
+    finder_src.appendChild(img);
+
+    interact(img).draggable({
+      listeners: {
+        start (event) 
+        {
+          fieldFinderIndex.removeFinder(event.target);
+        },
+        move (event) 
+        {
+          var target = event.target
+          // keep the dragged position in the data-x/data-y attributes
+          var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+          var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+        
+          // translate the element
+          target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+        
+          // update the posiion attributes
+          target.setAttribute('data-x', x)
+          target.setAttribute('data-y', y)
+        },
+      }
+    }).on('tap', function (event) { smartClick(event); });
   }
   let finder_button = document.getElementById("finder-button");
   finder_button.disabled = true;
@@ -85,61 +358,36 @@ function init()
   rerollField();
 }
 
-let finder1 = "";
-let finder2 = "";
-
-function quellen_allowDrop(ev) 
-{
-  if (ev.target && ev.target.id && ev.target.id.charAt(0) == 'd')
-  {
-    if (finder1 == "")
-    {
-      ev.preventDefault();
-    }
-    else if (finder2 == "")
-    {
-      tmp_finder2 = ev.target.id;
-      if (Math.abs(Number(finder1.substring(1)) - Number(tmp_finder2.substring(1))) == 10  )
-      {
-        ev.preventDefault();
-      }
-    }
-  }
-}
-
 function moveFinderToBorder(targetNode, sourceNode) 
 {
-  targetNode.src = sourceNode.src;
-  targetNode.style.transform = "rotate(0)";
-  sourceNode.src = "img/Empty.png";
-  targetNode.dataset["value"] = sourceNode.dataset["value"];
+  let x = targetNode.x - sourceNode.x;
+  let y = targetNode.y - sourceNode.y;
+  setRelativeFinderPosition(sourceNode, x, y);
 }
 
-function quellen_drop(ev) 
+function quellen_drop(target, finder) 
 {
-  if (ev.target && ev.target.id && ev.target.id.charAt(0) == 'd')
+  if (fieldFinderIndex.hasField(target))
   {
-    if (finder1 == "")
-    {
-      finder1 = ev.target.id;
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      finder = document.getElementById(data);
-      moveFinderToBorder(ev.target, finder);
-    }
-    else 
-    {
-      finder2 = ev.target.id;
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
-      let finder = document.getElementById(data);
-      moveFinderToBorder(ev.target, finder);
-      let finder_button = document.getElementById("finder-button");
-      finder_button.innerText = "Nimm die Quellen und würfle die Feld-Reihe neu.";
-      finder_button.onclick = rerollRow;
-      finder_button.disabled = false;
-      updateInfoTable();
-    }
+    let oldFinder = fieldFinderIndex.getFinderFromField(target);
+    setRelativeFinderPosition(oldFinder, 0, 0);
+  }
+  fieldFinderIndex.setFieldFinder(target, finder);
+  moveFinderToBorder(target, finder);
+}
+
+function updateFinderButtonState()
+{
+  let finder_button = document.getElementById("finder-button");
+  if (fieldFinderIndex.hasValidRow())
+  {
+    finder_button.innerText = "Nimm die Quellen und würfle die Feld-Reihe neu.";
+    finder_button.onclick = rerollRow;
+    finder_button.disabled = false;
+  }
+  else
+  {
+    finder_button.disabled = true;
   }
 }
 
@@ -158,82 +406,14 @@ function resetBorderGfx(i)
   }
 }
 
-function traverseCurrentRow(traverse_fn)
-{
-  // d0  d1  d2  d3  d4 d5 
-  // d6  q0  q1  q2  q3 d16
-  // d7  q4  q5  q6  q5 d17
-  // d8  q8  q9 q10 q11 d18
-  // d9 q12 q13 q14 q15 d19
-  // only d0-d9 are relevant 
-  let start = Number(finder1.substring(1));
-  let end = Number(finder2.substring(1));
-  if (start > end)
-  {
-    start = end;
-  }
-  for (let i = 0; i < 4; ++i)
-  {
-    if (start == 0)
-    {
-      // top-left main diagonal
-      traverse_fn(i * 5); 
-    }
-    else if (start == 5)
-    {
-      // top-right main diagonal
-      traverse_fn((i + 1) * 3); 
-    }
-    else if (start <= 4)
-    {
-      // top-to-bottom
-      traverse_fn(start + (i * 4) - 1); 
-    }
-    else 
-    {
-      // left-to-right
-      traverse_fn(((start - 6) * 4) + i); 
-    }
-  }
-}
-
-
 function rerollRow()
 {
-  resetBorderGfx(Number(finder1.substring(1)));
-  resetBorderGfx(Number(finder2.substring(1)));
-  traverseCurrentRow((i) => { rerollId("q" + i); });
-  finder1 = "";
-  finder2 = "";
+  fieldFinderIndex.traverseCurrentRow((i) => { rerollId(document.getElementById("q" + i)); });
+  removeAllFinders();
   updateInfoTable();
-  for (let i = 0; i < 4; i++) 
-  {
-    let element = document.getElementById("f" + i);
-    element.src = "img/Empty.png";
-  }
   let finder_button = document.getElementById("finder-button");
   finder_button.innerText = "Finder würfeln";
   finder_button.onclick = rerollFinder;
-}
-
-function rerollFieldClicked()
-{
-  finder1 = "";
-  finder2 = "";
-  updateInfoTable();
-  for (let i = 0; i < 4; i++) 
-  {
-    let element = document.getElementById("f" + i);
-    element.src = "img/Empty.png";
-  }
-  let finder_button = document.getElementById("finder-button");
-  finder_button.innerText = "Finder würfeln";
-  finder_button.onclick = rerollFinder;
-}
-
-function startDrag(ev) 
-{
-  ev.dataTransfer.setData("text", ev.target.id);
 }
 
 function help()
