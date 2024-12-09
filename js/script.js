@@ -418,7 +418,7 @@ function rerollRow()
 
 function help()
 {
-  document.getElementById("help-overlay").style.display = "block"; 
+  document.getElementById("help-overlay").style.display = "flex"; 
 }
 
 function help_off()

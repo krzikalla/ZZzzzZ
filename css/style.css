@@ -3,7 +3,7 @@
 
   .page-container {
     display: grid;
-    grid-template-columns: 100%;
+    grid-template-rows: 100% 16% 20%;
   }
 
   .grid-container {
@@ -25,14 +25,15 @@
 
   .page-container {
     display: grid;
-    grid-template-columns: 100% 16% 20%;
-    height: 95vh;
-    width: 95vh;
+    grid-template-columns: 100% 16% 16%;
+    height: 90vh;
+    width: 90vh;
   }
 
   .grid-container {
     display: grid;
     grid-template-columns: 16% 16% 16% 16% 16% 16%;
+    grid-template-rows: 16% 16% 16% 16% 16% 16%;
     background-color: #ffffff;
     height: 100%;
   }
@@ -40,22 +41,24 @@
   .finder-container {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 16% 16% 16% 16% 16% 8% 8%;
+    grid-template-rows: 16% 16% 16% 16% 16% 16%;
     background-color: #ffffff;
     width: 100%;
   }
 
   .info-container {
     display: grid;
-    grid-template-columns: 100%;
+    grid-template-rows: 80% 16%;
     width: 100%;
   }
 
 }
 
 #help-overlay {
+  justify-content: center;
+  align-items: center;
   position: fixed; /* Sit on top of the page content */
-  display: none; /* Hidden by default */
+  display: none; /* Hidden by default, switch to flex  */
   width: 100%; /* Full width (cover the whole page) */
   height: 100%; /* Full height (cover the whole page) */
   top: 0;
@@ -66,6 +69,13 @@
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
   user-select: none;
+}
+
+#help-dialog-background {
+  position: fixed; /* Sit on top of the page content */
+  width: 90%; /* Full width (cover the whole page) */
+  height: 90%; /* Full height (cover the whole page) */
+  z-index: 3; /* Specify a stack order in case you're using a different order for other elements */
 }
 
 .grid-item {

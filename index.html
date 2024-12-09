@@ -10,7 +10,10 @@
 </head>
 <body>
     <div id="help-overlay" onclick="help_off()">
-        <iframe width=100% height=100% src="regeln.htm" id="helpframe" onload="iframeclick()"></iframe> 
+        <div id="help-dialog-background"">
+            <iframe width=100% height=100% src="regeln.html" id="helpframe" onload="iframeclick()"></iframe> 
+            <button onclick="help_off()">Verlassen</button>
+        </div>
     </div>
     <div class="page-container">
             <div class="grid-container" id="quellen" ondrop="quellen_drop(event)" ontouchend="quellen_drop(event)" ontouchmove="quellen_allowDrop(event)" ondragover="quellen_allowDrop(event)">
@@ -58,7 +61,6 @@
             <div class="grid-item finder-img-container" id="pf2"><img class="element-image finder0" src="img/Empty.png" draggable=false /></div>
             <div class="grid-item finder-img-container" id="pf3"><img class="element-image finder0" src="img/Empty.png" draggable=false /></div>
             <button onclick="rerollFieldClicked()">Komplettes Feld neu würfeln</button>
-            <button onclick="help()">Hilfe</button>
         </div>
         <div class="info-container" id="info">
             <table id="info-table">
@@ -87,6 +89,7 @@
                 <td>0</td>
                 </tr>
             </table>
+            <button onclick="help()">Hilfe</button>
         </div>
 
     </div>
