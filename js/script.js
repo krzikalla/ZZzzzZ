@@ -72,6 +72,7 @@ function removeAllFinders()
       element.remove();
     }
   }
+  updateFinderButtonState();
 }
 
 function rerollFieldClicked()
@@ -105,6 +106,11 @@ class FieldFinder {
   hasFinder(finder) 
   {
     return this.finder_field.has(finder);
+  }
+
+  getFieldFromFinder(finder)
+  {
+    return this.finder_field.get(finder);
   }
 
   hasField(field) 
@@ -218,8 +224,6 @@ class FieldFinder {
       }
     }
   }
-  
-
 };
 
 let fieldFinderIndex = new FieldFinder;
@@ -320,7 +324,6 @@ function rerollFinder()
   {
     var img = document.createElement("img");
     img.classList.add("finder");
-    img.classList.add("element-image");
     img.id = "f" + i;
     rerollId(img);
     let finder_src = document.getElementById("pf" + i);
@@ -349,8 +352,7 @@ function rerollFinder()
       }
     }).on('tap', function (event) { smartClick(event); });
   }
-  let finder_button = document.getElementById("finder-button");
-  finder_button.disabled = true;
+  updateFinderButtonState();
 }
 
 function init()
@@ -358,11 +360,30 @@ function init()
   rerollField();
 }
 
-function moveFinderToBorder(targetNode, sourceNode) 
+function moveFinderToBorder(targetNode, finder) 
 {
-  let x = targetNode.x - sourceNode.x;
-  let y = targetNode.y - sourceNode.y;
-  setRelativeFinderPosition(sourceNode, x, y);
+  let x = targetNode.x - finder.x;
+  let y = targetNode.y - finder.y;
+  setRelativeFinderPosition(finder, x, y);
+}
+
+function repositionFinder()
+{
+  for (let i = 0; i < 4; i++) 
+  {
+    let finder = document.getElementById("f" + i);
+    if (finder)
+    {
+      if (!fieldFinderIndex.hasFinder(finder))
+      {
+        setRelativeFinderPosition(finder, 0, 0);
+      }
+      else
+      {
+        moveFinderToBorder(fieldFinderIndex.getFieldFromFinder(finder), finder);
+      }
+    }
+  }
 }
 
 function quellen_drop(target, finder) 
@@ -371,6 +392,7 @@ function quellen_drop(target, finder)
   {
     let oldFinder = fieldFinderIndex.getFinderFromField(target);
     setRelativeFinderPosition(oldFinder, 0, 0);
+    fieldFinderIndex.removeFinder(oldFinder)
   }
   fieldFinderIndex.setFieldFinder(target, finder);
   moveFinderToBorder(target, finder);
@@ -379,7 +401,14 @@ function quellen_drop(target, finder)
 function updateFinderButtonState()
 {
   let finder_button = document.getElementById("finder-button");
-  if (fieldFinderIndex.hasValidRow())
+  let finder = document.getElementById("f0");
+  if (!finder)
+  {
+    finder_button.innerText = "Finder würfeln";
+    finder_button.onclick = rerollFinder;
+    finder_button.disabled = false;
+  }
+  else if (fieldFinderIndex.hasValidRow())
   {
     finder_button.innerText = "Nimm die Quellen und würfle die Feld-Reihe neu.";
     finder_button.onclick = rerollRow;
@@ -391,29 +420,12 @@ function updateFinderButtonState()
   }
 }
 
-function resetBorderGfx(i)
-{
-  const rot_degrees = [0, 90, 90, 90, 90, 90, 0, 0, 0, 0, 180, 270, 270, 270, 270, 270, 180, 180, 180, 180];
-  let element = document.getElementById("d" + i);
-  element.style.transform = "rotate(" + rot_degrees[i] + "deg)";
-  if (i % 5 == 0)
-  {
-    element.src = "img/RechtsUnten.png";
-  }
-  else
-  {
-    element.src = "img/Rechts.png";
-  }
-}
-
 function rerollRow()
 {
   fieldFinderIndex.traverseCurrentRow((i) => { rerollId(document.getElementById("q" + i)); });
   removeAllFinders();
   updateInfoTable();
-  let finder_button = document.getElementById("finder-button");
-  finder_button.innerText = "Finder würfeln";
-  finder_button.onclick = rerollFinder;
+  updateFinderButtonState();
 }
 
 function help()
@@ -430,4 +442,18 @@ function iframeclick()
 {
   document.getElementById("helpframe").contentWindow.document.body.onclick = help_off;
 }
-  
+
+timeout = false, // holder for timeout id
+delay = 250, // delay after event is "complete" to run callback
+
+// window.resize event listener
+window.addEventListener('resize', function() {
+  // clear the timeout
+  clearTimeout(timeout);
+  // start timing for event "completion"
+  timeout = setTimeout(repositionFinder, delay);
+});
+
+screen.orientation.addEventListener('change', function(event) {
+  repositionFinder();
+});

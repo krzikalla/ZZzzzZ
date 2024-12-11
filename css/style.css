@@ -3,31 +3,46 @@
 
   .page-container {
     display: grid;
-    grid-template-rows: 100% 16% 20%;
+    grid-template-rows: 72% 12% 12%;
+    height: 120vw;
+    width: 90vw;
+    gap: 2%
   }
 
   .grid-container {
     display: grid;
     grid-template-columns: 16% 16% 16% 16% 16% 16%;
+    grid-template-rows: 16% 16% 16% 16% 16% 16%;
     background-color: #ffffff;
     width: 100%;
+    gap:0.8%;
   }
 
   .finder-container {
     display: grid;
-    grid-template-columns: 16% 16% 16% 16%;
+    grid-template-columns: 16% 16% 16% 16% 16% 16%;
     background-color: #ffffff;
+    height: 100%;
+    gap:0.8%;
   }
 
+  .info-container {
+    display: grid;
+    grid-template-columns: 80% 16%;
+    background-color: #ffffff;
+    width: 100%;
+    gap:4%;
+  }
 }
 
 @media screen and (orientation: landscape) {
 
   .page-container {
     display: grid;
-    grid-template-columns: 100% 16% 16%;
+    grid-template-columns: 72% 12% 12%;
     height: 90vh;
-    width: 90vh;
+    width: 120vh;
+    gap: 2%
   }
 
   .grid-container {
@@ -36,20 +51,23 @@
     grid-template-rows: 16% 16% 16% 16% 16% 16%;
     background-color: #ffffff;
     height: 100%;
+    gap:0.8%;
   }
 
   .finder-container {
     display: grid;
-    grid-template-columns: 100%;
     grid-template-rows: 16% 16% 16% 16% 16% 16%;
     background-color: #ffffff;
     width: 100%;
+    gap:0.8%;
   }
 
   .info-container {
     display: grid;
     grid-template-rows: 80% 16%;
+    background-color: #ffffff;
     width: 100%;
+    gap:4%;
   }
 
 }
@@ -80,7 +98,6 @@
 
 .grid-item {
   background-color: rgba(210, 210, 210, 0);
-  border: 2px solid rgba(0, 0, 0, 0.8);
   font-size: 30px;
   text-align: center;
   aspect-ratio: 1;
@@ -92,7 +109,9 @@
   width:100%;
   height:100%;
   user-select: none;
+  pointer-events: none;
   touch-action: none;
+  object-fit: contain;
 }
 
 td {
@@ -118,6 +137,8 @@ table {
 }
 
 .finder {
+  width:100%;
+  height:100%;
   z-index: 1;
   user-select: none;
   touch-action: none;
