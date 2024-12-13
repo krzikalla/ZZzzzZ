@@ -54,42 +54,22 @@
             <div class="grid-item"><img data-value=0 id="d14" class="element-image dropzone" src="img/Rechts.png" style="transform:rotate(270deg);" /></div>
             <div class="grid-item"><img data-value=0 id="d10" class="element-image dropzone" src="img/RechtsUnten.png" style="transform:rotate(180deg);" /></div>  
         </div>
-        <div class="finder-container" id="finder" data-marked-finder="">
-            <button onclick="rerollFinder()" id="finder-button">Finder würfeln</button>
+        <div class="finder-container" id="finder">
+            <button class = "button" onclick="rerollFinder()" id="finder-button">Finder würfeln</button>
             <div class="grid-item finder-img-container" id="pf0"><img class="element-image finder0" src="img/Empty.png" /></div>
             <div class="grid-item finder-img-container" id="pf1"><img class="element-image finder0" src="img/Empty.png" /></div>
             <div class="grid-item finder-img-container" id="pf2"><img class="element-image finder0" src="img/Empty.png" /></div>
             <div class="grid-item finder-img-container" id="pf3"><img class="element-image finder0" src="img/Empty.png" /></div>
-            <button onclick="rerollFieldClicked()">Komplettes Feld neu würfeln</button>
+            <button class = "button" onclick="rerollFieldClicked()">Komplettes Feld neu würfeln</button>
         </div>
-        <div class="info-container" id="info">
-            <table id="info-table">
-                <tr>
-                <td><img  class="element-image" src="img/Fire.png"/></td>
-                <td>0</td>
-                </tr>
-                <tr>
-                <td><img  class="element-image" src="img/Water.png"/></td>
-                <td>0</td>
-                </tr>
-                <tr>
-                <td><img  class="element-image" src="img/Air.png"/></td>
-                <td>0</td>
-                </tr>
-                <tr>
-                <td><img  class="element-image" src="img/Earth.png"/></td>
-                <td>0</td>
-                </tr>
-                <tr>
-                <td><img  class="element-image" src="img/Wisdom.png"/></td>
-                <td>0</td>
-                </tr>
-                <tr>
-                <td><img  class="element-image" src="img/Power.png"/></td>
-                <td>0</td>
-                </tr>
-            </table>
-            <button onclick="help()">Hilfe</button>
+        <div class="info-container">
+            <div class = "info-item"><img class="element-image" src="img/Fire.png"/><p class="info-text" id="info-text-0">0</p></div>
+            <div class = "info-item"><img class="element-image" src="img/Water.png"/><p class="info-text" id="info-text-1">0</p></div>
+            <div class = "info-item"><img class="element-image" src="img/Air.png"/><p class="info-text" id="info-text-2">0</p></div>
+            <div class = "info-item"><img class="element-image" src="img/Earth.png"/><p class="info-text" id="info-text-3">0</p></div>
+            <div class = "info-item"><img class="element-image" src="img/Wisdom.png"/><p class="info-text" id="info-text-4">0</p></div>
+            <div class = "info-item"><img class="element-image" src="img/Power.png"/><p class="info-text" id="info-text-5">0</p></div>
+            <button class = "button" onclick="help()">Hilfe</button>
         </div>
 
     </div>

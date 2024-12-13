@@ -18,7 +18,6 @@ function getElementIndexForId(id)
 
 function updateInfoTable()
 {
-  let infotable = document.getElementById("info-table");
   let element_nums = [0,0,0,0,0,0];
   if (fieldFinderIndex.hasValidRow())
   {
@@ -47,7 +46,8 @@ function updateInfoTable()
   }
   for (let i = 0; i < 6; ++i)
   { 
-    infotable.rows[i].cells[1].innerText = element_nums[i];
+    let infotext = document.getElementById("info-text-" + i);
+    infotext.innerText = element_nums[i];
   }
 }
 
