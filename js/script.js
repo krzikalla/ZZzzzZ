@@ -283,6 +283,8 @@ interact('.dropzone').dropzone({
     event.target.classList.remove('drop-active')
     event.target.classList.remove('drop-target')
     event.target.classList.remove('drop-target-valid')
+    event.relatedTarget.style.backgroundColor = "white"
+    event.relatedTarget.style.zIndex = "1";
     if (!fieldFinderIndex.hasFinder(event.relatedTarget))
     {
       setRelativeFinderPosition(event.relatedTarget, 0, 0);
@@ -325,6 +327,8 @@ function rerollFinder()
     var img = document.createElement("img");
     img.classList.add("finder");
     img.id = "f" + i;
+    img.style.backgroundColor = "white"
+    img.style.zIndex = "1";
     rerollId(img);
     let finder_src = document.getElementById("pf" + i);
     finder_src.appendChild(img);
@@ -334,6 +338,8 @@ function rerollFinder()
         start (event) 
         {
           fieldFinderIndex.removeFinder(event.target);
+          event.target.style.backgroundColor = ""
+          event.target.style.zIndex = "3";
         },
         move (event) 
         {
