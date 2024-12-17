@@ -183,3 +183,8 @@
   border-style: solid;
   z-index: 2;
 }
+
+dt
+{
+  font-weight: bold;
+}

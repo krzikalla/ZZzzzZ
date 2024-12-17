@@ -10,21 +10,52 @@
     <h1>Anleitung für die ZZzzzZ App</h1>
 
     <p>
-        Das Spiel startet mit einem bereits gewürfeltem Quellenfeld.
+        Das Spiel startet mit einem bereits gewürfeltem Quellenfeld. 
+        In der Tabelle ganz rechts oder unten ist die Gesamtanzahl der jeweiligen Quellen auf dem Feld vermerkt.
         Normalerweise werdet Ihr als erstes die Finder würfeln. 
         Die Plätze für die Finder sind an den schwach-grauen Würfeln erkennbar. Sie befinden sich rechts oder unter dem Quellenfeld.
         Ein gewürfelter Finder kann dann mit dem Finger oder der Maus auf den Rand des Quellenfeldes gezogen werden.
+        Sobald Ihr einen zweiten Finder gegenüber dem ersten Finder platziert (wenn Ihr über dem passenden Feld seid, wird der Rahmen grün), 
+        zeigt die Tabelle die Menge der Quellen, die Ihr erschliessen würdet. In diesem Fall wird die Schaltfläche zum Erschliessen wieder aktiv.
+        Wenn Ihr erschliesst, wird die erschlossene Reihe gleich neu ausgewürfelt.
+        Ihr könnt jedoch die Finder vorher noch beliebig hin- und herschieben, wenn Ihr vielleicht eine andere Reihe als lohnenswert erachtet.
     </p>
     <p>
         In bestimmten Situationen können Finder auch mit einem einfachen Klick bzw. Tap bewegt werden:
         <ul>
             <li>Befindet sich der Finder bereits auf dem Quellenfeld, wird er auf seinen Finder-Platz zurück bewegt.</li>
-            <li>Befindet sich der Finder bereits auf seinem Finder-Platz und befindet sich genau ein Finder auf dem Quellenfeld, so wird der 
-                angeklickte Finder auf das Feld direkt gegenüber bewegt, so dass die Reihe erschlossen wird.</li>
+            <li>Befindet sich der Finder auf seinem Finder-Platz und befindet sich genau ein Finder auf dem Quellenfeld, so wird der 
+                angeklickte Finder auf das Feld direkt gegenüber bewegt, so dass die Reihe erschlossen werden kann.</li>
         </ul>
     </p>
-    <h1>Kontakt</h1>
-    Wünsche oder Bugs können im <a href="https://github.com/krzikalla/ZZzzzZ/issues" target="_blank" rel="noopener noreferrer">github issue tracker</a> eingetragen werden. 
-    Alternativ wisst Ihr, wie Ihr mich erreicht &#x1F609.
+
+    <h2>Anmerkungen zum Spiel</h2>
+    <p>
+        Möglicherweise sind einige Mechaniken und Karten noch nicht 100% ausbalanciert. 
+        Für ein längeres Spiel mit mehr Zauberei empfehle ich die Reduktion der Machtattacke auf einen Schaden.
+        Schreibt mir gerne Eure Erfahrungen und Verbesserungsvorschläge. Ich werde diese hier sammeln und veröffentlichen. 
+    </p>
+
+    <h2>Anmerkungen zur Behandlung von Spielmechaniken und Karten in der Webapp</h2>
+    <dl>
+        <dt>Blockadesteine</dt>
+        <dd>Benutzt farbige Steine, damit klar ist, wem ein Blockadestein gehört. Platziert diese so neben das Tablet, 
+            dass die blockierte Reihe klar wird. Dieses Feature wird in der Webapp noch nachgereicht.</dd>
+        <dt>Naturgewalt</dt>
+        <dd>Würfelt keine Finder (wenn Ihr es schon gemacht habt, so platziert sie nicht). Nehmt Euch stattdessen alle in der Tabelle 
+            angezeigte Quellen (Maximum beachten). Dann würfelt das gesamte Feld neu (Schaltfläche unten oder rechts neben den Findern).
+        </dd>
+        <dt>Transfusion</dt>
+        <dd>Platziert zwei Finder in der Reihe, die Ihr erschliessen wollt. Ignoriert jedoch die Tabelle und zählt die erschlossenen 
+            Quellen von Hand. Dann würfelt die Reihe neu.</dd>
+        <dt>Sandsturm</dt>
+        <dd>Benutzt nur die zwei oberen bzw. linken Finder zum Erschliessen.</dd>
+    </dl>
+    <h2>Kontakt</h2>
+    <p>
+        Wünsche oder Bugs können im <a href="https://github.com/krzikalla/ZZzzzZ/issues" target="_blank" rel="noopener noreferrer">github 
+        issue tracker</a> eingetragen werden. Alternativ wisst Ihr, wie Ihr mich erreicht.
+        Das gilt insbesondere für Leute die Ahnung von und Lust auf Webdesign haben &#x1F609.
+    </p>
 </body>
 </html>
