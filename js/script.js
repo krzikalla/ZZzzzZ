@@ -407,16 +407,17 @@ function quellen_drop(target, finder)
 function updateFinderButtonState()
 {
   let finder_button = document.getElementById("finder-button");
+  let finder_image = document.getElementById("finder-image");
   let finder = document.getElementById("f0");
   if (!finder)
   {
-    finder_button.innerText = "Finder würfeln";
+    finder_image.src = "img/RollFinder.png";
     finder_button.onclick = rerollFinder;
     finder_button.disabled = false;
   }
   else if (fieldFinderIndex.hasValidRow())
   {
-    finder_button.innerText = "Nimm die Quellen und würfle die Feld-Reihe neu.";
+    finder_image.src = "img/RollRow.png";
     finder_button.onclick = rerollRow;
     finder_button.disabled = false;
   }
