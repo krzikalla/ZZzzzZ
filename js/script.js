@@ -368,8 +368,10 @@ function init()
 
 function moveFinderToBorder(targetNode, finder) 
 {
-  let x = targetNode.x - finder.x;
-  let y = targetNode.y - finder.y;
+  let targetRect = targetNode.getBoundingClientRect();
+  let finderRect = finder.parentElement.getBoundingClientRect();
+  let x = targetRect.x - finderRect.x;
+  let y = targetRect.y - finderRect.y;
   setRelativeFinderPosition(finder, x, y);
 }
 
