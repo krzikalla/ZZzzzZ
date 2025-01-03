@@ -472,7 +472,6 @@ let wakeLock = null
 const acquireLock = async () => {
   try {
     wakeLock = await navigator.wakeLock.request('screen')
-    console.log(`Lock acquired`)
   } catch (err) {
     console.log(`${err.name}, ${err.message}`)
   }
